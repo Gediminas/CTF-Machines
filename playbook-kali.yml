@@ -1,0 +1,154 @@
+# Known tooo:
+# * Super key triggers whiskey-menu. Manualy Settings->Kwyboard->change
+# * Add shortcut to kitty
+
+- name: Base
+  hosts: all
+  remote_user: vagrant
+  become: yes
+  vars:
+    repo_dir: "/home/vagrant/shared/repo"
+  tasks:
+
+  # - name: Update apt
+  #   apt:
+  #     update_cache: yes
+  #     cache_valid_time: 3600
+
+  # - name: Install base tools
+  #   package:
+  #     name:
+  #       - kitty
+  #       - gobuster
+  #       - vifm
+  #       - neovim
+  #       - mc
+  #       - vim
+  #       - mc
+  #       - poppler-utils #pdfutils
+  #       - fish
+  #     state: latest
+
+    # - name: Install rustscan
+    #   apt:
+    #     deb: https://github.com/helix-editor/helix/releases/download/22.12/helix-22.12-x86_64-linux.tar.xz
+
+    # - name: Install rustscan
+    #   apt:
+    #     deb: https://github.com/RustScan/RustScan/releases/download/2.0.1/rustscan_2.0.1_amd64.deb
+
+
+  # - name: rustscan 
+  #   git:
+  #    repo: https://github.com/RustScan/RustScan
+  #    dest: "{{ repo_dir }}/rustscan"
+  #    # force: no
+
+
+
+
+  # - name: helix 
+  #   git:
+  #    repo: https://github.com/helix-editor/helix
+  #    dest: "{{ repo_dir }}/helix"
+  #    # force: no
+
+# - name: Data / worklists / payloads
+#   hosts: all
+#   remote_user: vagrant
+#   tasks:
+#   - name: PayloadsAllTheThings
+#     git:
+#      repo: https://github.com/swisskyrepo/PayloadsAllTheThings
+#      dest: "/home/vagrant/shared/data/PayloadsAllTheThings"
+#      force: no
+#   - name: SecLists
+#     git:
+#      repo: https://github.com/TH3xACE/SecLists
+#      dest: "/home/vagrant/shared/data/SecLists"
+#      force: no
+
+# - name: Kali web apps
+#   hosts: all
+#   remote_user: vagrant
+#   vars:
+#     webroot: "/var/www/html/apps"
+#   tasks:
+#   - name: install nginx 
+#     apt:
+#       name: nginx
+#       state: latest
+#   - name: run nginx
+#     service:
+#       name: nginx
+#       state: started
+#   - name: asn1js
+#     git:
+#      repo: https://github.com/ArcHound/asn1js
+#      dest: "{{ webroot }}/asn1js"
+#      force: yes
+
+# - name: Payloads/wordlists
+#   hosts: all
+#   remote_user: vagrant
+#   tasks:
+#   - name: PayloadsAllTheThings clone
+#     git:
+#      repo: https://github.com/swisskyrepo/PayloadsAllTheThings
+#      dest: "/usr/share/PayloadsAllTheThings"
+#      force: yes
+#   - name: PayloadsAllTheThings link to wordlists
+#     file:
+#       src: "/usr/share/PayloadsAllTheThings"
+#       dest: "/usr/share/wordlists/PayloadsAllTheThings"
+#       state: link
+#   - name: SecLists clone
+#     git:
+#      repo: https://github.com/TH3xACE/SecLists
+#      dest: "/usr/share/SecLists"
+#      force: yes
+#   - name: SecLists link to wordlists
+#     file:
+#       src: "/usr/share/SecLists"
+#       dest: "/usr/share/wordlists/SecLists"
+#       state: link
+
+# - name: Privilege escalation tools
+#   hosts: all
+#   remote_user: vagrant
+#   vars:
+#     priv_esc_dir: "/usr/share/PrivEsc"
+#   tasks:
+#   - name: PrivEsc Folder
+#     file:
+#       path: "{{ priv_esc_dir }}"
+#       state: directory
+#   - name: LinEnum
+#     git:
+#      repo: https://github.com/rebootuser/LinEnum 
+#      dest: "{{ priv_esc_dir }}"
+#      force: yes
+#   - name: Lin Exploit suggester 
+#     git:
+#      repo: https://github.com/mzet-/linux-exploit-suggester 
+#      dest: "{{ priv_esc_dir }}"
+#      force: yes
+#   - name: PEAS
+#     git:
+#      repo: https://github.com/carlospolop/privilege-escalation-awesome-scripts-suite
+#      dest: "{{ priv_esc_dir }}"
+#      force: yes
+#   - name: pspy 
+#     git:
+#      repo: https://github.com/DominicBreuker/pspy
+#      dest: "{{ priv_esc_dir }}"
+#      force: yes
+
+# - name: Windows tools
+#   hosts: all
+#   remote_user: vagrant
+#   tasks:
+#   - name: gem evil-winrm
+#     gem: 
+#       name: evil-winrm
+#       state: latest
