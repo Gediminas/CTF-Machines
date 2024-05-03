@@ -11,36 +11,40 @@ Vagrant.configure("2") do |kali|
   kali.vm.box              = KALI_BOX
   kali.vm.hostname         = KALI_NAME
   kali.vm.box_check_update = true  #update: `vagrant box outdated`, `vagrant box update`
+
   kali.vm.define KALI_NAME
   kali.vm.network "private_network", ip: KALI_IP, virtualbox__intnet: INTRANET
+  # config.vm.network :forwarded_port, guest: 22, host: 1234
 
-  # kali.vm.synced_folder "configs", "/home/vagrant/configs", create: true, automount: true
-  kali.vm.synced_folder "../res",        "/home/vagrant/res",     create: true, automount: true
-  kali.vm.synced_folder "../work",       "/home/vagrant/work",    create: true, automount: true
+
+  kali.vm.synced_folder "~/.nix/User_gds", "/home/vagrant/config", create: true, automount: true
+  kali.vm.synced_folder "../res",          "/home/vagrant/res",    create: true, automount: true
+  kali.vm.synced_folder "../work",         "/home/vagrant/work",   create: true, automount: true
+
+  # kali.vm.base_address = KALI_IP
+  # kali.vm.usable_port_range
+  # kali.ssh.forward_x11 
 
   kali.vm.provider :virtualbox do |vbox|
     vbox.name   = KALI_NAME
     vbox.cpus   = KALI_CPU
     vbox.memory = KALI_RAM
-
-    # FIX: temp
-    # vbox.gui    = true
-    vbox.gui    = false
+    vbox.gui    = true
 
     vbox.customize ["modifyvm", :id, "--clipboard",          "bidirectional"]
     vbox.customize ["modifyvm", :id, "--draganddrop",        "bidirectional"]
-    # disable remote display somehow
-    # vbox.customize ["modifyvm", :id, "--graphicscontroller", "vboxsvga"]
     vbox.customize ["modifyvm", :id, "--graphicscontroller", "vboxsvga"]
     vbox.customize ["modifyvm", :id, "--vram",               "256"]
     vbox.customize ["modifyvm", :id, "--accelerate3d",       "on"]
     vbox.customize ["modifyvm", :id, "--monitorcount",       "1"]   
     vbox.customize ["modifyvm", :id, "--usb",                "on"]    
+    # vbox.customize ["setextradata", :id, "VBoxInternal2/SharedFoldersEnableSymlinksCreate/v-root", "1"]
   end
 
   kali.vm.provision :shell, :path => "install.sh"
 
   kali.vm.post_up_message = "'ctf-kali' is now running (user: vagrant, password: vagrant)"
+end
 
   # # Ansible
   # kali.vm.provision "ansible" do |ansible|
@@ -77,4 +81,3 @@ Vagrant.configure("2") do |kali|
 #   # using a specific IP.
 #   # config.vm.network "private_network", ip: "192.168.33.10"
 
-end
