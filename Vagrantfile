@@ -27,10 +27,7 @@ Vagrant.configure("2") do |kali|
 
     vbox.customize ["modifyvm", :id, "--clipboard",          "bidirectional"]
     vbox.customize ["modifyvm", :id, "--draganddrop",        "bidirectional"]
-    # vbox.customize ["modifyvm", :id, "--graphicscontroller", "vmsvga"]
-    # vbox.customize ["modifyvm", :id, "--vram",               "256"]
-    # vbox.customize ["modifyvm", :id, "--accelerate3d",       "on"]
-    # vbox.customize ["modifyvm", :id, "--monitorcount",       "1"]
+    vbox.customize ["modifyvm", :id, "--vram",               "256"]
     vbox.customize ["modifyvm", :id, "--usb",                "on"]
   end
 
