@@ -10,74 +10,32 @@ INTRANET  = "hacking"
 Vagrant.configure("2") do |kali|
   kali.vm.box              = KALI_BOX
   kali.vm.hostname         = KALI_NAME
-  kali.vm.box_check_update = true  #update: `vagrant box outdated`, `vagrant box update`
+  kali.vm.box_check_update = false  #update: `vagrant box outdated`, `vagrant box update`
 
   kali.vm.define KALI_NAME
   kali.vm.network "private_network", ip: KALI_IP, virtualbox__intnet: INTRANET
-  # config.vm.network :forwarded_port, guest: 22, host: 1234
 
-
-  kali.vm.synced_folder "~/.nix/User_gds", "/home/vagrant/config", create: true, automount: true
-  kali.vm.synced_folder "../res",          "/home/vagrant/res",    create: true, automount: true
-  kali.vm.synced_folder "../work",         "/home/vagrant/work",   create: true, automount: true
-
-  # kali.vm.base_address = KALI_IP
-  # kali.vm.usable_port_range
-  # kali.ssh.forward_x11 
+  kali.vm.synced_folder "../sync/.config",      "/home/vagrant/.config",       create: true, automount: true
+  kali.vm.synced_folder "../sync/.local_share", "/home/vagrant/.local/share/", create: true, automount: true
+  kali.vm.synced_folder "../sync",              "/home/vagrant/sync",          create: true, automount: true
 
   kali.vm.provider :virtualbox do |vbox|
     vbox.name   = KALI_NAME
     vbox.cpus   = KALI_CPU
     vbox.memory = KALI_RAM
-    vbox.gui    = true
+    vbox.gui    = false
 
     vbox.customize ["modifyvm", :id, "--clipboard",          "bidirectional"]
     vbox.customize ["modifyvm", :id, "--draganddrop",        "bidirectional"]
-    vbox.customize ["modifyvm", :id, "--graphicscontroller", "vboxsvga"]
-    vbox.customize ["modifyvm", :id, "--vram",               "256"]
-    vbox.customize ["modifyvm", :id, "--accelerate3d",       "on"]
-    vbox.customize ["modifyvm", :id, "--monitorcount",       "1"]   
-    vbox.customize ["modifyvm", :id, "--usb",                "on"]    
-    # vbox.customize ["setextradata", :id, "VBoxInternal2/SharedFoldersEnableSymlinksCreate/v-root", "1"]
+    # vbox.customize ["modifyvm", :id, "--graphicscontroller", "vmsvga"]
+    # vbox.customize ["modifyvm", :id, "--vram",               "256"]
+    # vbox.customize ["modifyvm", :id, "--accelerate3d",       "on"]
+    # vbox.customize ["modifyvm", :id, "--monitorcount",       "1"]
+    vbox.customize ["modifyvm", :id, "--usb",                "on"]
   end
 
-  kali.vm.provision :shell, :path => "install.sh"
+  kali.vm.provision :shell, :path => "scripts/install.sh"
 
   kali.vm.post_up_message = "'ctf-kali' is now running (user: vagrant, password: vagrant)"
 end
-
-  # # Ansible
-  # kali.vm.provision "ansible" do |ansible|
-  #   ansible.playbook = "playbook-kali.yml"
-  #   ansible.become = true
-  #   ansible.become_user = "root"
-  #   ansible.compatibility_mode = '2.0'
-  #   ansible.extra_vars = { ansible_python_interpreter:"/usr/bin/python3" }
-  # end
-
-##################################################
-#   kali.vm.provision "shell", inline: <<-SHELL
-#     chsh -s /usr/bin/fish vagrant
-
-#     # Install Rust
-#     curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-
-#     # Install Tide
-#     /home/vagrant/.cargo/bin/cargo install tide   
-#   SHELL
-
-#   # Create a forwarded port mapping which allows access to a specific port
-#   # within the machine from a port on the host machine. In the example below,
-#   # accessing "localhost:8080" will access port 80 on the guest machine.
-#   # NOTE: This will enable public access to the opened port
-#   # config.vm.network "forwarded_port", guest: 80, host: 8080
-
-#   # Create a forwarded port mapping which allows access to a specific port
-#   # within the machine from a port on the host machine and only allow access
-#   # via 127.0.0.1 to disable public access
-#   # config.vm.network "forwarded_port", guest: 80, host: 8080, host_ip: "127.0.0.1"
-
-#   # Create a private network, which allows host-only access to the machine
-#   # using a specific IP.
-#   # config.vm.network "private_network", ip: "192.168.33.10"
 
